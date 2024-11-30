@@ -10,16 +10,63 @@
         .disabled{
             pointer-events: none;
         }
+        body{
+            background: url(./pexels-content-pixie-1405717-2736499.jpg) no-repeat;
+            background-size: cover;
+            
+        }
+        .task-done{
+            text-decoration: line-through;
+            color: red;
+
+        }
+        li{
+            cursor: pointer;
+        }
+        input{
+            border-radius: 10px;
+            color: beige;
+            background-color: rgb(48, 48, 73);
+            height: 20px;
+            width: 200px;
+        }
+        ol{
+            background-color: rgb(175, 96, 96);
+            width: 700px;
+            border-radius: 20px;
+            color: rgb(255, 255, 255);
+            overflow: hidden;
+        }
+        li{
+            background: rgb(243, 137, 137);
+            border-bottom: 1px solid black;
+            padding: 15px 15px;
+            
+            
+            
+            
+        }
+        button{
+            padding: 8px 12px;
+            background-color:rgb(0, 174, 255) ;
+            border-radius: 20px;
+            cursor: pointer;
+            border: none;
+            color: rgb(255, 255, 255);
+        }
+        span{
+            padding-right: 3%;
+        }
         
     </style>
 </head>
 <body>
 
-    <input type="text" id="todo-input" value="harchi">
+    <input type="text" id="todo-input" value="">
     <button  id="submit-button">add todo</button>
     
-    <ul id="root">
+    <ol id="root">
 
-    </ul>
+    </ol>
 </body>
 </html>

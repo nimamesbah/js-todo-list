@@ -2,6 +2,8 @@
 const input = document.getElementById("todo-input");
 const btn = document.getElementById("submit-button");
 const root = document.getElementById("root");
+
+
 let count=0;
 
 const todos = []
@@ -13,15 +15,20 @@ function handleAddTodo() {
     if(inputVal!==""){
         todos.push(inputVal)
         todosId.push(inputVal)
+        input.placeholder=""
         
         
 
+    }else{
+        input.placeholder="Something Must Written"
     }
     console.log(typeof inputVal)
     input.value=""
-    
+    if(inputVal!==""){
+        return renderTodos() 
 
-    return renderTodos() 
+    }
+
 
 
 }
@@ -30,7 +37,10 @@ function renderTodosId(){
     // debugger
     for(let i=0;i<todosId.length;i++){
         todosId.splice(i,1,String(todos[i]+id++))
-        document.getElementById(`${todos[i]}`).setAttribute("id",todosId[i])
+        
+            document.getElementById(`${todos[i]}`).setAttribute("id",todosId[i])
+
+        
     }
     return todosId 
     
@@ -41,25 +51,31 @@ function renderTodosId(){
 
 function renderTodos() {
     count=0
-    const template = todos.map(item => {
-        console.log(item)
+    
         
+        const template = todos.map(item => {
+            console.log(item)
+            
+            
+            return `
+            <li id="${item}"  >
+            <span class="" onclick="doneTask(this)">
+            ${item}
+            </span>
+            <button  onclick="deleteItem(this)">delete</button>
+            <button  onclick="editItem(this)">edit</button>
+            </li>
+            `
+        })
         
-        return `
-        <li id="${item}" style="color:red">
-        <span>
-        ${item}
-        </span>
-        <button  onclick="deleteItem(this)">delete</button>
-        <button  onclick="editItem(this)">edit</button>
-        </li>
-        `
-    })
+
+            const temp = template.join("")
+            
+            root.innerHTML = temp
+        
     
     
-    const temp = template.join("")
     
-    root.innerHTML = temp
     return renderTodosId()
 }
 
@@ -119,6 +135,14 @@ function editItem(clickedElement){
 
 
 }
+
+function doneTask(item) {
+    console.log(item) 
+    item.classList.toggle("task-done")
+    
+    
+}
+
 
 function freezAddTodo(){
     btn.classList.add("disabled")
