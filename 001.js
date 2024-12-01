@@ -68,7 +68,7 @@ function renderTodos() {
             `
         })
         
-
+        
             const temp = template.join("")
             
             root.innerHTML = temp
@@ -92,6 +92,17 @@ function deleteItem(clickedElement) {
             todosId.splice(i,1)
     }
         }
+}
+function deleteAll(){
+    todos.splice(0,todos.length)
+    todosId.splice(0,todosId.length)
+    let allItems = document.querySelectorAll("li")
+    for (const item of allItems) {
+        item.remove()
+        
+    }
+
+    
 }
 function editItem(clickedElement){
     count++
@@ -151,5 +162,9 @@ function freezAddTodo(){
 function unFreezAddTodo(){
     btn.classList.remove("disabled")
 }
+localStorage.setItem("list",JSON.stringify(todos))
+localStorage.setItem("listId",JSON.stringify(todosId))
+
+
 
 
