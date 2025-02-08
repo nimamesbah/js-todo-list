@@ -39,13 +39,14 @@ function renderTodos() {
 
     const template = todos.map(item => {
         return `
-        <li id="${item.id}" style="color:red">
-            <input onchange="handleChangeCheckbox(this,${item.id})" type="checkbox" ${item.isDone ? "checked" : ""} />
-            ${item.id === editableitemId ? `<input id="editInput" value="${item.title}" />` : `<span>${item.title}</span>`}
-            <button onclick="deleteItem(${item.id})">delete</button>
-            ${item.id === editableitemId ? `<button onclick="saveEdit()">save</button>` : `<button onclick="editItem(${item.id})">edit</button>`}
+        <div class="${!item.isDone ? `bg-[#F0F8FF]` : `bg-[#C0C0C0]` } w-[550px] duration-200 h-12 flex gap-3 items-center rounded-xl px-2" id="${item.id}">
+            <input class="" onchange="handleChangeCheckbox(this,${item.id})" type="checkbox" ${item.isDone ? "checked" : ""} />
+            ${item.id === editableitemId ? `<input class="w-[300px] border bg-amber-50 rounded-sm px-1.5" id="editInput" value="${item.title}" maxlength="45" />` : `<span class="grow-[2]">${item.title}</span>`}
+            <div onclick="deleteItem(${item.id})"><img class="w-5" src="/delete-svgrepo-com.svg" alt=""></div>
+            ${item.id === editableitemId ? `<div onclick="saveEdit()"><img class="w-5" src="/save-svgrepo-com(1).svg" alt="">
+            </div>` : `<div onclick="editItem(${item.id})"><img class="w-5" src="/edit-svgrepo-com.svg" alt=""></div>`}
             
-        </li>
+        </div>
         `
     })
 
@@ -60,6 +61,7 @@ function handleChangeCheckbox(element, id) {
     const foundIndex = todos.findIndex(item => item.id === id);
 
     todos[foundIndex].isDone = element.checked;
+    
     renderTodos();
 }
 
