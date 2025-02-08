@@ -1,170 +1,101 @@
-
+// DOM nodes
 const input = document.getElementById("todo-input");
 const btn = document.getElementById("submit-button");
 const root = document.getElementById("root");
 
+const todosData = JSON.parse(localStorage.getItem("todos"))
 
-let count=0;
 
-const todos = []
-const todosId= []
-btn.addEventListener("click",handleAddTodo)
+
+const todos = todosData || [];
+let editableitemId = null;
 
 function handleAddTodo() {
-    const inputVal = input.value
-    if(inputVal!==""){
-        todos.push(inputVal)
-        todosId.push(inputVal)
-        input.placeholder=""
-        
-        
 
-    }else{
-        input.placeholder="Something Must Written"
+    const inputVal = input.value;
+
+    if (inputVal) {
+        // let newId = 1;
+
+        // if(todos.length > 0) {
+        //     newId = todos.at(-1).id + 1
+        // }
+
+        const newTodo = {
+            id: todos.length > 0 ? todos.at(-1).id + 1 : 1,
+            title: inputVal,
+            isDone: false
+        }
+
+        todos.push(newTodo)
+        input.value = ""
+        renderTodos()
     }
-    console.log(typeof inputVal)
-    input.value=""
-    if(inputVal!==""){
-        return renderTodos() 
-
-    }
-
-
-
 }
-function renderTodosId(){
-    let id=0
-    // debugger
-    for(let i=0;i<todosId.length;i++){
-        todosId.splice(i,1,String(todos[i]+id++))
-        
-            document.getElementById(`${todos[i]}`).setAttribute("id",todosId[i])
-
-        
-    }
-    return todosId 
-    
-        
-
-}
-
 
 function renderTodos() {
-    count=0
-    
-        
-        const template = todos.map(item => {
-            console.log(item)
+
+    localStorage.setItem("todos", JSON.stringify(todos));
+
+    const template = todos.map(item => {
+        return `
+        <li id="${item.id}" style="color:red">
+            <input onchange="handleChangeCheckbox(this,${item.id})" type="checkbox" ${item.isDone ? "checked" : ""} />
+            ${item.id === editableitemId ? `<input id="editInput" value="${item.title}" />` : `<span>${item.title}</span>`}
+            <button onclick="deleteItem(${item.id})">delete</button>
+            ${item.id === editableitemId ? `<button onclick="saveEdit()">save</button>` : `<button onclick="editItem(${item.id})">edit</button>`}
             
-            
-            return `
-            <li id="${item}"  >
-            <span class="" onclick="doneTask(this)">
-            ${item}
-            </span>
-            <button  onclick="deleteItem(this)">delete</button>
-            <button  onclick="editItem(this)">edit</button>
-            </li>
-            `
-        })
-        
-        
-            const temp = template.join("")
-            
-            root.innerHTML = temp
-        
-    
-    
-    
-    return renderTodosId()
+        </li>
+        `
+    })
+
+    const temp = template.join("")
+
+    root.innerHTML = temp
 }
 
+renderTodos()
 
-function deleteItem(clickedElement) {
-    count=0
-    unFreezAddTodo()
-    // debugger
-    clickedElement.parentElement.remove()
-    console.log(clickedElement.parentElement)
-    for (let i=0;i<todos.length;i++) {
-        if(todosId[i]===clickedElement.parentElement.id){
-            todos.splice(i,1)
-            todosId.splice(i,1)
-    }
-        }
+function handleChangeCheckbox(element, id) {
+    const foundIndex = todos.findIndex(item => item.id === id);
+
+    todos[foundIndex].isDone = element.checked;
+    renderTodos();
 }
-function deleteAll(){
-    todos.splice(0,todos.length)
-    todosId.splice(0,todosId.length)
-    let allItems = document.querySelectorAll("li")
-    for (const item of allItems) {
-        item.remove()
-        
+
+function saveEdit() {
+    const editInputValue = document.getElementById("editInput").value;
+
+    if (editInputValue) {
+        const foundIndex = todos.findIndex(item => item.id === editableitemId);
+        todos[foundIndex].title = editInputValue;
     }
 
-    
-}
-function editItem(clickedElement){
-    count++
-    freezAddTodo()
-    
-    if(count===1){
-        let submitBtn=document.createElement("button")
-        let editInput=document.createElement("input")
-        editInput.getAttribute("type","text")
-        editInput.getAttribute("value")
-        editInput.id="editInput"
-        submitBtn.innerText="change"
-        submitBtn.id="editBtn"
-        editInput.placeholder="press change if refuse!"
-        clickedElement.parentElement.appendChild(editInput)
-        clickedElement.parentElement.appendChild(submitBtn)
-        submitBtn.addEventListener("click",()=>{
-            if(editInput.value===""){
-                editInput.remove()
-                submitBtn.remove()
-                count=0
+    editableitemId = null;
 
-            }
-            if(editInput.value!==""){
-                // debugger
-                for (let i=0;i<todos.length;i++){
-                    if(todosId[i]===clickedElement.parentElement.id){
-                        todos.splice(i,1,editInput.value)
-                        editInput.remove()
-                        submitBtn.remove()
-                        renderTodos()
-                        count=0
-                    }
-                }
-            }
-        
-   unFreezAddTodo()
- })
-    
-}
-
+    renderTodos();
 
 }
 
-function doneTask(item) {
-    console.log(item) 
-    item.classList.toggle("task-done")
-    
-    
+function editItem(id) {
+    editableitemId = id;
+    renderTodos();
 }
 
 
-function freezAddTodo(){
-    btn.classList.add("disabled")
+function deleteItem(itemId) {
+    const foundIndex = todos.findIndex(item => item.id === itemId);
+
+    todos.splice(foundIndex, 1);
+
+    renderTodos();
+
 }
 
-function unFreezAddTodo(){
-    btn.classList.remove("disabled")
+function handleKeyPress(evt) {
+    if (evt.key === "Enter") {
+        handleAddTodo();
+    }
 }
-localStorage.setItem("list",JSON.stringify(todos))
-localStorage.setItem("listId",JSON.stringify(todosId))
 
-
-
-
+input.addEventListener("keypress", handleKeyPress)
