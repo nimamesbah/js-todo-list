@@ -10,11 +10,13 @@ const todosData = JSON.parse(localStorage.getItem("todos"))
 const todos = todosData || [];
 let editableitemId = null;
 
-function handleAddTodo() {
-
+function handleAddTodo(element) {
+    element.classList.add("scale-110")
+    setTimeout(()=> element.classList.remove("scale-110"),50)
+// debugger
     const inputVal = input.value;
 
-    if (inputVal) {
+    if (inputVal.match(/[A-Za-z]/g) !== null) {
         // let newId = 1;
 
         // if(todos.length > 0) {
@@ -31,6 +33,7 @@ function handleAddTodo() {
         input.value = ""
         renderTodos()
     }
+    input.value = ""
 }
 
 function renderTodos() {
@@ -39,12 +42,12 @@ function renderTodos() {
 
     const template = todos.map(item => {
         return `
-        <div class="${!item.isDone ? `bg-[#F0F8FF]` : `bg-[#C0C0C0]` } w-[550px] duration-200 h-12 flex gap-3 items-center rounded-xl px-2" id="${item.id}">
+        <div class="${!item.isDone ? `bg-[#F0F8FF]` : `bg-[#C0C0C0]` } w-[550px] duration-100 min-h-12 hover:border flex gap-3 items-center rounded-xl px-2" id="${item.id}">
             <input class="" onchange="handleChangeCheckbox(this,${item.id})" type="checkbox" ${item.isDone ? "checked" : ""} />
             ${item.id === editableitemId ? `<input class="w-[300px] border bg-amber-50 rounded-sm px-1.5" id="editInput" value="${item.title}" maxlength="45" />` : `<span class="grow-[2]">${item.title}</span>`}
-            <div onclick="deleteItem(${item.id})"><img class="w-5" src="/delete-svgrepo-com.svg" alt=""></div>
-            ${item.id === editableitemId ? `<div onclick="saveEdit()"><img class="w-5" src="/save-svgrepo-com(1).svg" alt="">
-            </div>` : `<div onclick="editItem(${item.id})"><img class="w-5" src="/edit-svgrepo-com.svg" alt=""></div>`}
+            <div onclick="deleteItem(${item.id})"><img class="w-5 cursor-pointer" src="/delete-svgrepo-com.svg" alt=""></div>
+            ${item.id === editableitemId ? `<div onclick="saveEdit()"><img class="w-5 cursor-pointer" src="/save-svgrepo-com(1).svg" alt="">
+            </div>` : `<div onclick="editItem(${item.id})"><img class="w-5 cursor-pointer" src="/edit-svgrepo-com.svg" alt=""></div>`}
             
         </div>
         `
@@ -86,11 +89,13 @@ function editItem(id) {
 
 
 function deleteItem(itemId) {
+    document.getElementById(`${itemId}`).classList.add("translate-x-[-600px]")
+    console.log(document.getElementById(`${itemId}`))
     const foundIndex = todos.findIndex(item => item.id === itemId);
 
     todos.splice(foundIndex, 1);
 
-    renderTodos();
+    setTimeout(renderTodos,200);
 
 }
 
