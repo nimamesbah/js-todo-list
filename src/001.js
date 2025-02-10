@@ -44,7 +44,7 @@ function renderTodos() {
         return `
         <div class="${!item.isDone ? `bg-[#F0F8FF]` : `bg-[#C0C0C0]` } w-[550px] duration-100 min-h-12 hover:border flex gap-3 items-center rounded-xl px-2" id="${item.id}">
             <input class="" onchange="handleChangeCheckbox(this,${item.id})" type="checkbox" ${item.isDone ? "checked" : ""} />
-            ${item.id === editableitemId ? `<input class="w-[300px] border bg-amber-50 rounded-sm px-1.5" id="editInput" value="${item.title}" maxlength="45" />` : `<span class="grow-[2]">${item.title}</span>`}
+            ${item.id === editableitemId ? `<input class="w-[300px] border bg-amber-50 rounded-sm px-1.5 grow-[2]" id="editInput" value="${item.title}" maxlength="45" />` : `<span class="grow-[2]">${item.title}</span>`}
             <div onclick="deleteItem(${item.id})"><img class="w-5 cursor-pointer" src="/delete-svgrepo-com.svg" alt=""></div>
             ${item.id === editableitemId ? `<div onclick="saveEdit()"><img class="w-5 cursor-pointer" src="/save-svgrepo-com(1).svg" alt="">
             </div>` : `<div onclick="editItem(${item.id})"><img class="w-5 cursor-pointer" src="/edit-svgrepo-com.svg" alt=""></div>`}
