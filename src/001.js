@@ -96,6 +96,8 @@ function deleteAll(element){
     setTimeout(()=> element.classList.remove("scale-110"),50)
     if(todos.length!==0)
     document.getElementById("toast").classList.toggle("translate-x-50")
+    if(!document.getElementById("toast").classList.contains("translate-x-50"))
+    setTimeout(()=> document.getElementById("toast").classList.add("translate-x-50") ,5000)
     
 }
 function deleteAllConfirm(){
