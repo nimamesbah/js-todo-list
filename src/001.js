@@ -94,7 +94,14 @@ function deleteAll(element){
     
     element.classList.add("scale-110")
     setTimeout(()=> element.classList.remove("scale-110"),50)
+    if(todos.length!==0)
+    document.getElementById("toast").classList.toggle("translate-x-50")
+    
+}
+function deleteAllConfirm(){
     const nodes =document.querySelectorAll("#root > div")
+    document.getElementById("toast").classList.toggle("translate-x-50")
+
     console.log("nodes",nodes)
     if(nodes !== null){
         for (const node of nodes) {
@@ -105,9 +112,6 @@ function deleteAll(element){
     }
     todos.splice(0,todos.length)
     setTimeout(renderTodos,150) 
-}
-function deleteAllConfirm(){
-
 }
 function delDecline(element){
     element.parentElement.classList.toggle("translate-x-20")
