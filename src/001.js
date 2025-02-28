@@ -14,26 +14,28 @@ let editableitemId = null;
 function handleAddTodo(element) {
     element.classList.add("scale-110")
     setTimeout(()=> element.classList.remove("scale-110"),50)
-// debugger
+    // debugger
     const inputVal = input.value;
-
+    
     if (inputVal.match(/[A-Za-z]/g) !== null) {
         // let newId = 1;
-
+        
         // if(todos.length > 0) {
-        //     newId = todos.at(-1).id + 1
-        // }
-
-        const newTodo = {
-            id: todos.length > 0 ? todos.at(-1).id + 1 : 1,
-            title: inputVal,
-            isDone: false
+            //     newId = todos.at(-1).id + 1
+            // }
+            
+            const newTodo = {
+                id: todos.length > 0 ? todos.at(-1).id + 1 : 1,
+                title: inputVal,
+                isDone: false
+            }
+            
+            todos.push(newTodo)
+            input.value = ""
+            renderTodos()
         }
-
-        todos.push(newTodo)
-        input.value = ""
-        renderTodos()
-    }
+        if(todos.length!==0)
+        document.getElementById("clearAll").classList.remove("pointer-events-none")
     input.value = ""
 }
 
@@ -43,9 +45,9 @@ function renderTodos() {
 
     const template = todos.map(item => {
         return `
-        <div class="${!item.isDone ? `bg-[#F0F8FF]` : `bg-[#C0C0C0]` } w-[550px] duration-100 min-h-12 relative hover:border flex gap-3 items-center rounded-xl px-2" id="${item.id}">
+        <div class="${!item.isDone ? `bg-[#F0F8FF]` : `bg-[#C0C0C0]` } sm:w-[550px] w-[80vw] duration-100 min-h-12 relative hover:border flex gap-3  items-center rounded-xl px-2" id="${item.id}">
             <input class="" onchange="handleChangeCheckbox(this,${item.id})" type="checkbox" ${item.isDone ? "checked" : ""} />
-            ${item.id === editableitemId ? `<input class="w-[300px] border bg-amber-50 rounded-sm px-1.5 grow-[2]" id="editInput" value="${item.title}" maxlength="45" />` : `<span class="grow-[2]">${item.title}</span>`}
+            ${item.id === editableitemId ? `<input class="w-[300px] border bg-amber-50 rounded-sm px-1.5 grow-[2]" id="editInput" value="${item.title}" maxlength="45" />` : `<span class="grow-[2] max-sm:w-[80%] max-sm:overflow-x-auto">${item.title}</span>`}
             <div onclick="deleteItem(${item.id})"><img class="w-5 cursor-pointer" src="/delete-svgrepo-com.svg" alt=""></div>
             ${item.id === editableitemId ? `<div onclick="saveEdit()"><img class="w-5 cursor-pointer" src="/save-svgrepo-com(1).svg" alt="">
             </div>` : `<div onclick="editItem(${item.id})"><img class="w-5 cursor-pointer" src="/edit-svgrepo-com.svg" alt=""></div>`}
@@ -90,19 +92,40 @@ function editItem(id) {
     editableitemId = id;
     renderTodos();
 }
+if(todos.length===0)
+    document.getElementById("clearAll").classList.add("pointer-events-none")
+if(todos.length!==0)
+    document.getElementById("clearAll").classList.remove("pointer-events-none")
+
 function deleteAll(element){
     
     element.classList.add("scale-110")
     setTimeout(()=> element.classList.remove("scale-110"),50)
-    if(todos.length!==0)
-    document.getElementById("toast").classList.toggle("translate-x-50")
-    if(!document.getElementById("toast").classList.contains("translate-x-50"))
-    setTimeout(()=> document.getElementById("toast").classList.add("translate-x-50") ,5000)
+    if(todos.length!==0){
+        document.getElementById("toast").classList.remove("hidden")
+        setTimeout(()=>{
+            document.getElementById("clearAll").classList.add("pointer-events-none")
+            document.getElementById("toast").classList.toggle("translate-x-50")
+
+
+        },10) 
+    }
+    
+    setTimeout(()=> {
+        document.getElementById("toast").classList.add("translate-x-50")
+        if(todos.length!==0)
+        document.getElementById("clearAll").classList.remove("pointer-events-none")
+        
+
+    } ,5000)
     
 }
 function deleteAllConfirm(){
     const nodes =document.querySelectorAll("#root > div")
     document.getElementById("toast").classList.toggle("translate-x-50")
+    document.getElementById("toast").classList.add("hidden")
+    document.getElementById("clearAll").classList.remove("pointer-event-none")
+    
 
     console.log("nodes",nodes)
     if(nodes !== null){

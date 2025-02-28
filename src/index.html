@@ -9,17 +9,17 @@
     <link rel="stylesheet" href="style.css">
     <script src="001.js" defer></script>
 </head>
-<body class="overflow-hidden">
-    <div id="toast" class="w-max absolute right-0 top-[34px] px-10 py-3 duration-300 translate-x-50 ">
+<body class="overflow-x-hidden h-screen ">
+    <div id="toast" class="w-max absolute right-0 top-[34px] px-10 py-3 duration-300 translate-x-50 hidden  ">
         <div  class="bg-[#F0FFFF] rounded-4xl  absolute right-5 px-6 py-7 flex gap-3 items-center w-max">
             <h3 class="w-max ">are you sure?</h3>
             <img onclick="deleteAllConfirm()" class="cursor-pointer rounded-full bg-green-300 w-5" src="/tick-svgrepo-com.svg" alt="">
         </div>
     </div>
-    <div class="ml-16 mt-16">
-        <input class="inline-block mb-5 ml-24 bg-[#F0FFFF] w-52 px-2.5 h-10 rounded-2xl" type="text" id="todo-input" value="" maxlength="45">
+    <div class="ml-3.5 sm:ml-16 mt-16 ">
+        <input class="inline-block mb-5  bg-[#F0FFFF] max-sm:w-[50%] px-2.5 h-10 rounded-2xl" type="text" id="todo-input" value="" maxlength="45">
         <div class="inline-block mb-5 px-2 py-2 text-blue-100 capitalize cursor-pointer duration-150 hover:bg-[#5F9EA0] rounded-4xl bg-[#0096FF] " onclick="handleAddTodo(this)" id="submit-button">add todo</div>
-        <div class="inline-block mb-5 px-2 py-2 text-blue-100  capitalize cursor-pointer duration-150 hover:bg-[#D70040] rounded-4xl bg-[#0096FF] " onclick="deleteAll(this)" id="delAllbtn">clear All</div>
+        <div id="clearAll" class="inline-block mb-5  px-2 py-2 text-blue-100  capitalize cursor-pointer duration-150 hover:bg-[#D70040] rounded-4xl bg-[#0096FF] " onclick="deleteAll(this)" id="delAllbtn">clear All</div>
      
         <div class="flex flex-col  gap-4 duration-300 overflow-auto max-h-[500px]" id="root">
             
